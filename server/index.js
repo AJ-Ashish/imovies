@@ -13,6 +13,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Health check route
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 const SECRET = process.env.JWT_SECRET || 'dev_secret';
 const wrap = (fn) => (req, res) => fn(req, res).catch((e) => res.status(500).json({ message: e.message }));
 const sign = (u) => jwt.sign({ id: u._id, isAdmin: u.isAdmin }, SECRET, { expiresIn: '7d' });
